@@ -12,7 +12,7 @@ FLAG_DEBUG = 1
 VERBOSE = True
 CC = "g++"
 SRC_PATH = "src"
-CFLAGS = f"-I {SRC_PATH} -g -Wall -Wextra -Wshadow -Werror=switch-enum" + ("" if not FLAG_DEBUG else " -D DEBUG")
+CFLAGS = f"-I {SRC_PATH} -I include -g -Werror=switch-enum" + ("" if not FLAG_DEBUG else " -D DEBUG")
 LFLAGS = "-lraylib -lGL -lm -lpthread -ldl -lrt -lX11"
 OBJ_PATH = "temp"
 BIN = "./bin/fun2048"
