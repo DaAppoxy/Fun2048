@@ -9,7 +9,7 @@ typedef raylib::Vector2 v2;
 typedef raylib::Rectangle Rect;
 
 constexpr float SCALE = 100.f;
-constexpr int w = 4, h = 4;
+constexpr int w = 6, h = 6;
 struct Box {
   Rect rect;
   uint64_t value;
@@ -99,14 +99,13 @@ int main() {
         Box &b = grid[x + y * w];
         const v2 p(x * SCALE + (XMAX - w * SCALE) / 2.f,
                    y * SCALE + (YMAX - h * SCALE) / 2.f);
-        b.rect.x = Lerp(b.rect.x, p.x, 0.01f);
-        b.rect.y = Lerp(b.rect.y, p.y, 0.01f);
+        b.rect.SetPosition(b.rect.GetPosition().MoveTowards(p, 0.9f));
         if (b.value != 0) {
           b.rect.Draw(palette[last_bit_index(b.value)]);
           const char *const s = TextFormat("%lu", (unsigned long)b.value);
           const v2 m = font.MeasureText(s, SCALE / 2.f, 2.f);
           rl::DrawTextEx(font, s,
-                         b.rect.GetPosition() + (v2{SCALE, SCALE} - m) / 2.f,
+                         b.rect.GetPosition() + (v2{SCALE/2.f, SCALE/2.f} - m) / 2.f,
                          SCALE / 2.f, 2.f, WHITE);
         }
       }
@@ -135,10 +134,10 @@ int main() {
           ) {
             if (
               grid[tx + dx + (ty+dy)*w].value != 0
-            &&grid[tx + dx + (ty+dy)*w].value == grid[(tx) + (ty)*w].value
+            &&grid[tx + dx + (ty+dy)*w].value == grid[(x) + (y)*w].value
             ) {
               grid[tx + dx + (ty+dy)*w].value <<= 1;
-              grid[tx + ty*w].value = 0;
+              grid[x + y*w].value = 0;
               continue;
             }
           }
